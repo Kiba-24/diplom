@@ -16,6 +16,7 @@ Full-stack приложение для обработки обращений в 
 - Предзагрузка 50 тестовых обращений.
 
 ## Быстрый запуск (Docker)
+## Запуск
 ```bash
 docker compose up --build
 ```
@@ -65,7 +66,7 @@ wsl -l -v
    - **Settings → Resources → WSL Integration**
 
 ### 5) Если была ошибка `npm ci ... package-lock.json`
-Это исправлено в текущем проекте: frontend-сборка сначала пытается `npm ci` при наличии lock-файла, а при его отсутствии автоматически использует `npm install`.
+Это исправлено в текущем проекте: frontend-сборка использует `npm install`, поэтому `package-lock.json` не обязателен.
 
 ### 6) Проверка, что всё запустилось
 ```powershell
@@ -73,34 +74,6 @@ docker compose ps
 docker compose logs -f backend
 docker compose logs -f frontend
 ```
-
-### 6a) Если backend пишет `no main manifest attribute, in app.jar`
-Это означает, что jar собран не как исполняемый Spring Boot jar.
-
-Решение:
-```powershell
-docker compose build --no-cache backend
-docker compose up
-```
-Если проблема повторяется, проверьте, что в `backend/pom.xml` используется `spring-boot-starter-parent` и `spring-boot-maven-plugin` с goal `repackage`.
-
-### 7) Если Docker всё ещё показывает `RUN npm ci`
-Вы запускаете старую копию проекта (или старый Docker cache).
-
-Проверьте текущий `frontend/Dockerfile`:
-```powershell
-type frontend\Dockerfile
-```
-Там должна быть строка с условием `if [ -f package-lock.json ] ... else npm install ...`.
-
-Затем пересоберите без cache:
-```powershell
-docker compose build --no-cache
-docker compose up
-```
-
-Если у вас несколько папок (`diplom-main`, `diplom-main (1)`), запускайте команду именно из той, где лежит обновлённый Dockerfile.
-
 
 ## Тестовые логины
 Инициализируются автоматически при первом запуске:
