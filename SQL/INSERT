@@ -1,0 +1,81 @@
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+
+INSERT INTO roles (name) VALUES
+('USER'),
+('OPERATOR'),
+('ADMIN');
+
+
+INSERT INTO users (username, email, password_hash, role_id, timezone)
+VALUES
+(
+ 'Волков Андрей Сергеевич',
+ 'volkovas@gazprom.ru',
+ crypt('gazprom_VAS', gen_salt('bf')),
+ 1,
+ 'Europe/Moscow'
+),
+(
+ 'Лисов Дмитрий Павлович',
+ 'lisovdp@gazprom.ru',
+ crypt('gazprom_LDP', gen_salt('bf')),
+ 1,
+ 'Europe/Samara'
+),
+(
+ 'Медведев Олег Игоревич',
+ 'medvedev oi@gazprom.ru',
+ crypt('gazprom_MOI', gen_salt('bf')),
+ 2,
+ 'Europe/Yekaterinburg'
+),
+(
+ 'Зайцев Максим Викторович',
+ 'zaitsevmv@gazprom.ru',
+ crypt('gazprom_ZMV', gen_salt('bf')),
+ 1,
+ 'Asia/Omsk'
+),
+(
+ 'Соколов Артём Романович',
+ 'sokolovar@gazprom.ru',
+ crypt('gazprom_SAR', gen_salt('bf')),
+ 2,
+ 'Asia/Krasnoyarsk'
+),
+(
+ 'Орлов Кирилл Андреевич',
+ 'orlovka@gazprom.ru',
+ crypt('gazprom_OKA', gen_salt('bf')),
+ 1,
+ 'Asia/Irkutsk'
+),
+(
+ 'Тигров Никита Олегович',
+ 'tigrovno@gazprom.ru',
+ crypt('gazprom_TNO', gen_salt('bf')),
+ 1,
+ 'Asia/Yakutsk'
+),
+(
+ 'Барсов Роман Евгеньевич',
+ 'barsovre@gazprom.ru',
+ crypt('gazprom_BRE', gen_salt('bf')),
+ 2,
+ 'Asia/Vladivostok'
+),
+(
+ 'Бобров Алексей Сергеевич',
+ 'bobrovas@gazprom.ru',
+ crypt('gazprom_BAS', gen_salt('bf')),
+ 1,
+ 'Europe/Moscow'
+),
+(
+ 'Котов Илья Максимович',
+ 'kotovim@gazprom.ru',
+ crypt('gazprom_KIM', gen_salt('bf')),
+ 3,
+ 'Europe/Moscow'
+);
