@@ -1,37 +1,32 @@
-# UML (PlantUML)
-```plantuml
-@startuml
-!define RECTANGLE class
+# ER-диаграмма
+```mermaid
+erDiagram
 
-actor "Пользователь" as User
-actor "Оператор" as Operator
+  ROLES ||--o{ USERS : has
+  USERS ||--o{ TICKETS : creates
+  USERS ||--o{ TICKETS : assigned_to
+  USERS ||--o{ MESSAGES : sends
+  USERS ||--o{ AUDIT_LOGS : performs
 
-rectangle "Frontend (React)" as FE
-rectangle "Backend (Spring Boot)" as BE {
-  rectangle "REST Controllers"
-  rectangle "Service Layer"
-  rectangle "SLA Module"
-  rectangle "AI Module"
-  rectangle "Security (AD Integration)"
-}
+  STATUSES ||--o{ TICKETS : defines
+  PRIORITIES ||--o{ TICKETS : sets
+  CATEGORIES ||--o{ TICKETS : classifies
 
-database "PostgreSQL" as DB
-rectangle "Active Directory" as AD
-rectangle "LLM / AI Engine" as LLM
+  TICKETS ||--o{ MESSAGES : contains
+  TICKETS ||--o{ ATTACHMENTS : includes
+  TICKETS ||--|| SLA_METRICS : has
+  TICKETS ||--o{ SLA_VIOLATIONS : generates
 
-User --> FE
-Operator --> FE
+  PRIORITIES ||--o{ SLA_POLICY : regulates
+  SLA_POLICY ||--o{ SLA_METRICS : applies
 
-FE --> BE : REST API
-
-BE --> DB : SQL
-BE --> AD : LDAP
-BE --> LLM : AI запросы
-
-@enduml
 ```
-Архитектура построена по принципу client-server
-Backend реализован на Spring Boot
-Используется реляционная СУБД
-Интеграция с AD через LDAP
-Интеллектуальный модуль не взаимодействует напрямую с пользователем
+Клиентская часть реализована ??????.
+
+Серверная часть — Spring Boot 3.x.
+
+Взаимодействие осуществляется через REST API.
+
+Данные хранятся в PostgreSQL.
+
+Интеллектуальный модуль встроен в backend и используется для: классификации обращения, поиска похожих кейсов, подбора статей из базы знаний
