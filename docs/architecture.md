@@ -1,25 +1,18 @@
 # ER-диаграмма
 ```mermaid
-erDiagram
+flowchart LR
 
-  ROLES ||--o{ USERS : has
-  USERS ||--o{ TICKETS : creates
-  USERS ||--o{ TICKETS : assigned_to
-  USERS ||--o{ MESSAGES : sends
-  USERS ||--o{ AUDIT_LOGS : performs
+  User[Пользователь / Оператор]
 
-  STATUSES ||--o{ TICKETS : defines
-  PRIORITIES ||--o{ TICKETS : sets
-  CATEGORIES ||--o{ TICKETS : classifies
+  FE[Frontend<br/>React]
+  BE[Backend<br/>Spring Boot]
+  DB[(PostgreSQL)]
+  AI[AI-модуль<br/>Классификация и поиск похожих случаев]
 
-  TICKETS ||--o{ MESSAGES : contains
-  TICKETS ||--o{ ATTACHMENTS : includes
-  TICKETS ||--|| SLA_METRICS : has
-  TICKETS ||--o{ SLA_VIOLATIONS : generates
-
-  PRIORITIES ||--o{ SLA_POLICY : regulates
-  SLA_POLICY ||--o{ SLA_METRICS : applies
-
+  User --> FE
+  FE -->|REST API| BE
+  BE --> DB
+  BE --> AI
 ```
 Клиентская часть реализована ??????.
 
