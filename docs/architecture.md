@@ -24,7 +24,7 @@ Operator --> FE
 
 FE --> BE : REST API
 
-BE --> DB : JPA / SQL
+BE --> DB : SQL
 BE --> AD : LDAP
 BE --> LLM : AI запросы
 
