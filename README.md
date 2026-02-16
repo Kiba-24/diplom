@@ -24,34 +24,15 @@ docker compose up --build
 Frontend: http://localhost:5173  
 Backend: http://localhost:8080
 
-## Подробно для новичка (Windows)
+## Windows
 
-### 1) Что значит «терминал в корне проекта»
-Корень проекта — папка, где лежат `docker-compose.yml`, `backend/`, `frontend/`.
-
-Пример:
-```powershell
-cd C:\Users\DasUser\Downloads\diplom-main\diplom-main
-dir
-```
-В списке файлов должен быть `docker-compose.yml`.
-
-### 2) Как запустить Docker Desktop
-1. Откройте **Docker Desktop** через меню Пуск.
-2. Дождитесь статуса **Engine running**.
-3. Проверьте в PowerShell:
-```powershell
-docker version
-docker compose version
-```
-
-### 3) Запуск проекта
+### 1) Запуск проекта
 Из корня проекта:
 ```powershell
 docker compose up --build
 ```
 
-### 4) Если видите ошибку `open //./pipe/dockerDesktopLinuxEngine`
+### 2) Если видите ошибку `open //./pipe/dockerDesktopLinuxEngine`
 Это означает, что Docker Engine не запущен.
 
 Что делать:
@@ -65,17 +46,15 @@ wsl -l -v
    - **Settings → General → Use the WSL 2 based engine**
    - **Settings → Resources → WSL Integration**
 
-### 5) Если была ошибка `npm ci ... package-lock.json`
-Это исправлено в текущем проекте: frontend-сборка использует `npm install`, поэтому `package-lock.json` не обязателен.
 
-### 6) Проверка, что всё запустилось
+### 3) Проверка, что всё запустилось
 ```powershell
 docker compose ps
 docker compose logs -f backend
 docker compose logs -f frontend
 ```
 
-## Тестовые логины
+## Тестовые логины 
 Инициализируются автоматически при первом запуске:
 - `admin / admin123`
 - `operator / operator123`
