@@ -82,28 +82,6 @@ docker compose logs -f db
 docker compose logs -f backend
 ```
 
-
-### Если появляется `TLS handshake timeout` при `docker compose up --build`
-Это сетевой таймаут при обращении к Docker Hub, а не ошибка приложения.
-
-Что можно сделать:
-1. Повторить запуск (часто помогает при временной деградации сети):
-```bash
-docker compose build --no-cache
-docker compose up
-```
-2. Использовать зеркало/внутренний registry через `.env` (проект теперь это поддерживает):
-```bash
-cp .env.example .env
-# пример: подставьте доступные в вашей сети образы
-# FRONTEND_BASE_IMAGE=mirror.gcr.io/library/node:22-alpine
-# BACKEND_BUILD_IMAGE=mirror.gcr.io/library/maven:3.9-eclipse-temurin-17
-# BACKEND_RUNTIME_IMAGE=mirror.gcr.io/library/eclipse-temurin:17-jre
-# POSTGRES_IMAGE=mirror.gcr.io/library/postgres:16
-docker compose up --build
-```
-3. Для Docker Desktop проверить proxy/DNS (Settings → Resources/Network), затем перезапустить Docker Desktop.
-
 ## Тестовые логины 
 Инициализируются автоматически при первом запуске:
 - `admin / admin123`
