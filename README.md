@@ -54,6 +54,34 @@ docker compose logs -f backend
 docker compose logs -f frontend
 ```
 
+
+## Подключение к PostgreSQL
+
+Приложение уже настроено на PostgreSQL по умолчанию.
+
+### Параметры подключения backend
+- `SPRING_DATASOURCE_URL` (пример: `jdbc:postgresql://localhost:5432/support`)
+- `SPRING_DATASOURCE_USERNAME`
+- `SPRING_DATASOURCE_PASSWORD`
+
+### Локальный запуск через Docker Compose
+По умолчанию поднимается контейнер `db` (PostgreSQL 16), а backend подключается к нему по адресу `db:5432`.
+
+При необходимости можно переопределить параметры через переменные окружения:
+
+```bash
+cp .env.example .env
+# при необходимости отредактируйте значения в .env
+docker compose up --build
+```
+
+### Проверка подключения
+```bash
+docker compose ps
+docker compose logs -f db
+docker compose logs -f backend
+```
+
 ## Тестовые логины 
 Инициализируются автоматически при первом запуске:
 - `admin / admin123`
