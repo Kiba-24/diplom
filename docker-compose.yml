@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:16
+    image: ${POSTGRES_IMAGE:-postgres:16}
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-support}
       POSTGRES_USER: ${POSTGRES_USER:-support}
@@ -15,7 +15,11 @@ services:
       retries: 5
 
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      args:
+        BACKEND_BUILD_IMAGE: ${BACKEND_BUILD_IMAGE:-maven:3.9-eclipse-temurin-17}
+        BACKEND_RUNTIME_IMAGE: ${BACKEND_RUNTIME_IMAGE:-eclipse-temurin:17-jre}
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-support}
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-support}
@@ -27,7 +31,10 @@ services:
     ports: ['8080:8080']
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        FRONTEND_BASE_IMAGE: ${FRONTEND_BASE_IMAGE:-node:22-alpine}
     environment:
       VITE_API_URL: http://localhost:8080
     depends_on: [backend]
