@@ -1,22 +1,44 @@
 services:
   db:
-    image: postgres:16
+    image: ${POSTGRES_IMAGE:-postgres:16}
     environment:
-      POSTGRES_DB: support
-      POSTGRES_USER: support
-      POSTGRES_PASSWORD: support
+      POSTGRES_DB: ${POSTGRES_DB:-support}
+      POSTGRES_USER: ${POSTGRES_USER:-support}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-support}
     ports: ['5432:5432']
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-support} -d ${POSTGRES_DB:-support}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      args:
+        BACKEND_BUILD_IMAGE: ${BACKEND_BUILD_IMAGE:-maven:3.9-eclipse-temurin-17}
+        BACKEND_RUNTIME_IMAGE: ${BACKEND_RUNTIME_IMAGE:-eclipse-temurin:17-jre}
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/support
-      SPRING_DATASOURCE_USERNAME: support
-      SPRING_DATASOURCE_PASSWORD: support
-    depends_on: [db]
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-support}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-support}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-support}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: ${SPRING_JPA_HIBERNATE_DDL_AUTO:-update}
+    depends_on:
+      db:
+        condition: service_healthy
     ports: ['8080:8080']
+
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        FRONTEND_BASE_IMAGE: ${FRONTEND_BASE_IMAGE:-node:22-alpine}
     environment:
       VITE_API_URL: http://localhost:8080
     depends_on: [backend]
     ports: ['5173:5173']
+
+volumes:
+  postgres_data:
